@@ -39,21 +39,26 @@ export class DbClient {
     ];
 
     return new Promise<Connection>(async (resolve: Function, reject: Function) => {
-      const connection = await createConnection({
-        type: this.dbType,
-        host: host,
-        port: port,
-        username: username,
-        password: password,
-        database: database,
-        entities: entities,
-        debug: debug,
-        synchronize: debug // Dev environment only!
-      });
-      if (!this.connection && connection) {
-        this.connection = connection;
+      try {
+        const connection = await createConnection({
+          type: this.dbType,
+          host: host,
+          port: port,
+          username: username,
+          password: password,
+          database: database,
+          entities: entities,
+          debug: debug,
+          insecureAuth: true,
+          synchronize: debug // Dev environment only!
+        });
+        if (!this.connection && connection) {
+          this.connection = connection;
+        }
+        return resolve(connection);
+      } catch (error) {
+        return reject(error);
       }
-      return resolve(connection);
     });
   }
 }

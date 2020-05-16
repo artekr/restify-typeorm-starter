@@ -10,12 +10,20 @@ services:
     volumes:
       - .:/code
     depends_on:
-      - api-server-mongo
+      - api-server-mysql
     env_file:
-      - ./env/api-server.env
+      - .env.development
     command: npm run start:watch
 
-  api-server-mongo:
-    image: mongo
-    ports:
-      - 27017:27017
+  api-server-mysql:
+    image: mysql:8.0
+    restart: unless-stopped
+    volumes:
+      - <you_path>:/var/lib/mysql
+    env_file:
+      - .env.development
+    environment:
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
