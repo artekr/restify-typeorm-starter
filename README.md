@@ -9,22 +9,21 @@ A functional REST API server start with restify and typeorm
 - typeorm (database manager)
 - inversify (DI)
 - inversify-restify-utils
+- docker
 
 ### docker mysql
 
 - url: https://hub.docker.com/_/mysql
 - version: 8.0
 
-**KNOWN ISSUE**
-
-- Problem
+**Known issue**
 
 [stackoverflow](https://stackoverflow.com/a/56509065/1219719)
 
 > MySQL 8 has supports pluggable authentication methods. By default, one of them named caching_sha2_password is used rather than our good old mysql_native_password ([source](https://dev.mysql.com/doc/refman/8.0/en/caching-sha2-pluggable-authentication.html))
 .
 
-- Fix
+- How to fix?
 
 1. After bring up the server in docker, connect to `db-mysql` container:
 
