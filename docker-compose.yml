@@ -10,12 +10,12 @@ services:
     volumes:
       - .:/code
     depends_on:
-      - api-server-mysql
+      - db-mysql
     env_file:
       - .env.development
     command: npm run start:watch
 
-  api-server-mysql:
+  db-mysql:
     image: mysql:8.0
     restart: unless-stopped
     volumes:
