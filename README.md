@@ -20,8 +20,7 @@ A functional REST API server start with restify and typeorm
 
 [stackoverflow](https://stackoverflow.com/a/56509065/1219719)
 
-> MySQL 8 has supports pluggable authentication methods. By default, one of them named caching_sha2_password is used rather than our good old mysql_native_password ([source](https://dev.mysql.com/doc/refman/8.0/en/caching-sha2-pluggable-authentication.html))
-.
+> MySQL 8 has supports pluggable authentication methods. By default, one of them named caching_sha2_password is used rather than our good old mysql_native_password ([source](https://dev.mysql.com/doc/refman/8.0/en/caching-sha2-pluggable-authentication.html)).
 
 - How to fix?
 
