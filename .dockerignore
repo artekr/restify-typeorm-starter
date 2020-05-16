@@ -1,0 +1,10 @@
+node_modules/
+logs/
+*.log
+npm-debug.log*
+.DS_Store
+.vscode
+.git/
+.git*
+typings/
+ts-node/

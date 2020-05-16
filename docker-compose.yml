@@ -1,0 +1,21 @@
+version: "3.7"
+
+services:
+  api-server:
+    build:
+      context: .
+      target: develop
+    ports:
+      - 4321:80
+    volumes:
+      - .:/code
+    depends_on:
+      - api-server-mongo
+    env_file:
+      - ./env/api-server.env
+    command: npm run start:watch
+
+  api-server-mongo:
+    image: mongo
+    ports:
+      - 27017:27017

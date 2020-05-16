@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  api-server:
+    build:
+      context: .
+      target: release
+    ports:
+      - 4321:80
+    depends_on:
+      - api-server-mongo
+    env_file:
+      - ./env/api-server-prod.env
+    command: yarn start
+  api-server-mongo:
+    image: mongo
+    ports:
+      - 27017:27017

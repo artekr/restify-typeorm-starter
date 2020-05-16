@@ -1,0 +1,65 @@
+{
+  "name": "veronica",
+  "version": "0.0.1",
+  "description": "A functional REST API server start with restify and typeorm",
+  "main": "index.js",
+  "scripts": {
+    "compile": "rm -rf build && tsc",
+    "build": "npm run compile",
+    "start": "node ./build/index.js",
+    "start:watch": "NODE_ENV=development nodemon --inspect --watch app -e ts --exec 'ts-node app/index.ts'",
+    "lint": "tslint -c tslint.json ./app/{,**/}*.ts --format verbose"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/artekr/restify-typeorm-starter.git"
+  },
+  "keywords": [
+    "veronica",
+    "bopu",
+    "pop",
+    "cidian"
+  ],
+  "author": "Heng Wang",
+  "license": "UNLICENSED",
+  "homepage": "https://github.com/artekr/restify-typeorm-starter#readme",
+  "dependencies": {
+    "class-validator": "^0.11.1",
+    "config": "^3.3.1",
+    "dotenv": "^8.2.0",
+    "inversify": "^5.0.1",
+    "inversify-restify-utils": "^3.4.0",
+    "module-alias": "^2.2.2",
+    "moment": "^2.24.0",
+    "mysql": "^2.18.1",
+    "nanoid": "^2.1.11",
+    "reflect-metadata": "^0.1.13",
+    "request": "^2.88.2",
+    "restify": "^8.5.1",
+    "typeorm": "^0.2.24"
+  },
+  "devDependencies": {
+    "@types/config": "0.0.36",
+    "@types/dotenv": "^8.2.0",
+    "@types/mysql": "^2.15.10",
+    "@types/nanoid": "^2.1.0",
+    "@types/node": "^13.13.4",
+    "@types/pino": "^6.0.0",
+    "@types/restify": "^8.4.2",
+    "nodemon": "^2.0.3",
+    "pino": "^6.2.1",
+    "pino-pretty": "^4.0.0",
+    "ts-node": "^8.9.1",
+    "tslint": "^5.20.1",
+    "tslint-microsoft-contrib": "^6.2.0",
+    "typescript": "^3.8.3"
+  },
+  "_moduleAliases": {
+    "@controllers": "app/controllers",
+    "@services": "app/services",
+    "@types": "app/types",
+    "@repositories": "app/repositories",
+    "@dal": "app/dal",
+    "@domains": "app/domains"
+  }
+}
