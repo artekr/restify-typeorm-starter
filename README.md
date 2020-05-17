@@ -11,6 +11,10 @@ A functional REST API server start with restify and typeorm
 - inversify-restify-utils
 - docker
 
+## Authentication
+
+- [bcryptjs](https://github.com/kelektiv/node.bcrypt.js): A library to help you hash passwords.
+
 ### docker mysql
 
 - url: https://hub.docker.com/_/mysql
