@@ -2,6 +2,7 @@ import { Request, Response, Next } from 'restify';
 import { injectable, inject, named } from 'inversify';
 import { Controller, Get, Post } from 'inversify-restify-utils';
 import { Logger } from 'pino';
+import * as errors from 'restify-errors';
 
 import { TYPE } from '@types';
 import { BaseController } from '@controllers/base/BaseController';
@@ -25,7 +26,7 @@ export class UserController extends BaseController {
       next();
     } catch (err) {
       this.logger.error('UserController | getUser failed: %s', err);
-      next(err);
+      return next(new errors.ResourceNotFoundError('Could not found user with id: %d', req.params.userId));
     }
   }
 
