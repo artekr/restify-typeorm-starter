@@ -35,6 +35,7 @@
     "reflect-metadata": "^0.1.13",
     "request": "^2.88.2",
     "restify": "^8.5.1",
+    "restify-errors": "^8.0.2",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
