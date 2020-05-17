@@ -49,7 +49,6 @@ export class DbClient {
           database: database,
           entities: entities,
           debug: debug,
-          insecureAuth: true,
           synchronize: debug // Dev environment only!
         });
         if (!this.connection && connection) {

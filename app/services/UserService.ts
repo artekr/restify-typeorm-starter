@@ -2,7 +2,7 @@ import { injectable, inject, named } from 'inversify';
 import { Logger } from 'pino';
 
 import { TYPE } from '@types';
-import { UserRepository } from '@repositories/UserRepository';
+import { UserRepository } from '@repositories/userRepository';
 import { User } from '@domains/entities/user';
 
 export interface CustomerServiceParams {

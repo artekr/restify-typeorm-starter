@@ -8,15 +8,15 @@ import { Container } from 'inversify';
 import { interfaces } from 'inversify-restify-utils';
 import { Connection } from 'typeorm';
 
-import { App } from './App';
+import { App } from './app';
 import { TYPE } from '@types';
 import { DbClient, DbType } from '@dal/dbClient';
-import { AuthController } from '@controllers/AuthController';
-import { UserController } from '@controllers/UserController';
-import { UserService } from '@services/UserService';
-import { AuthService } from '@services/AuthService';
+import { SessionController } from '@controllers/sessionController';
+import { UserController } from '@controllers/userController';
+import { UserService } from '@services/userService';
+import { SessionService } from '@services/sessionService';
 import { UserDataMapper } from '@dal/dataMappers/userDataMapper';
-import { UserRepository } from '@repositories/UserRepository';
+import { UserRepository } from '@repositories/userRepository';
 
 export type DbProvider = () => Promise<Connection>;
 
@@ -89,12 +89,12 @@ export class Registry {
   }
 
   private bindControllers(): void {
-    this.container.bind<interfaces.Controller>(TYPE.Controller).to(AuthController).whenTargetNamed('AuthController');
+    this.container.bind<interfaces.Controller>(TYPE.Controller).to(SessionController).whenTargetNamed('SessionController');
     this.container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTargetNamed('UserController');
   }
 
   private bindServices(): void {
-    this.container.bind<AuthService>(TYPE.Service).to(AuthService).inSingletonScope().whenTargetNamed('Auth');
+    this.container.bind<SessionService>(TYPE.Service).to(SessionService).inSingletonScope().whenTargetNamed('Session');
     this.container.bind<UserService>(TYPE.Service).to(UserService).inSingletonScope().whenTargetNamed('User');
   }
 

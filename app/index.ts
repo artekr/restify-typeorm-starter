@@ -1,6 +1,6 @@
 import 'module-alias/register';
-import { App } from './App';
-import { Registry } from './Registry';
+import { App } from './app';
+import { Registry } from './registry';
 
 const container = Registry.getContainer();
 

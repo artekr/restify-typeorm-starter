@@ -4,7 +4,7 @@ import { IConfig } from 'config';
 import { Logger } from 'pino';
 import { injectable, inject } from 'inversify';
 
-import { Registry } from './Registry';
+import { Registry } from './registry';
 
 @injectable()
 export class App {

@@ -1,4 +1,4 @@
-import { TYPE as RestifyTypes } from 'inversify-restify-utils'
+import { TYPE as RestifyTypes } from 'inversify-restify-utils';
 
 // tslint:disable export-name
 export const TYPE = {
@@ -7,4 +7,4 @@ export const TYPE = {
   Service: Symbol.for('Service'),
   Repository: Symbol.for('Repository'),
   DataMapper: Symbol.for('DataMapper')
-}
+};

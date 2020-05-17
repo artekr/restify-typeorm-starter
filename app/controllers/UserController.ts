@@ -5,8 +5,8 @@ import { Logger } from 'pino';
 import * as errors from 'restify-errors';
 
 import { TYPE } from '@types';
-import { BaseController } from '@controllers/base/BaseController';
-import { UserService } from '@services/UserService';
+import { BaseController } from '@controllers/base/baseController';
+import { UserService } from '@services/userService';
 
 @injectable()
 @Controller('/users')
@@ -21,9 +21,10 @@ export class UserController extends BaseController {
   @Get('/:userId')
   public async getUser(req: Request, res: Response, next: Next): Promise<void> {
     try {
+      this.logger.info('UserController ');
       const user = await this.service.getOne(req.params.userId);
       res.json(200, user);
-      next();
+      return next();
     } catch (err) {
       this.logger.error('UserController | getUser failed: %s', err);
       return next(new errors.ResourceNotFoundError('Could not found user with id: %d', req.params.userId));
@@ -35,10 +36,10 @@ export class UserController extends BaseController {
     try {
       const user = await this.service.createOne(req.body);
       res.json(201, user);
-      next();
+      return next();
     } catch (err) {
       this.logger.error('UserController | createUser failed: %s', err);
-      next(err);
+      return next(err);
     }
   }
 }

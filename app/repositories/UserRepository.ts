@@ -6,9 +6,9 @@ import { UserEntity } from '@dal/entities/userEntity';
 import { UserDataMapper } from '@dal/dataMappers/userDataMapper';
 import { User } from '@domains/entities/user';
 import { IUserRepository } from '@domains/interfaces/repository';
-import { BaseRepository } from '@repositories/base/BaseRepository';
+import { BaseRepository } from '@repositories/base/baseRepository';
 
-import { DbProvider } from '../Registry';
+import { DbProvider } from '../registry';
 
 @injectable()
 export class UserRepository extends BaseRepository<User, UserEntity> implements IUserRepository {
