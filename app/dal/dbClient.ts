@@ -1,6 +1,5 @@
 import { injectable } from 'inversify';
 import { Connection, createConnection } from 'typeorm';
-import { UserEntity } from '@dal/entities/userEntity';
 
 export enum DbType {
   Mysql = 'mysql',
@@ -34,9 +33,6 @@ export class DbClient {
     }
 
     const { host, port, username, password, database, debug } = this.options;
-    const entities = [
-      UserEntity
-    ];
 
     return new Promise<Connection>(async (resolve: Function, reject: Function) => {
       try {
@@ -47,7 +43,7 @@ export class DbClient {
           username: username,
           password: password,
           database: database,
-          entities: entities,
+          entities: [__dirname + '/entities/*.ts'],
           debug: debug,
           synchronize: debug // Dev environment only!
         });
