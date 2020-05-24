@@ -24,7 +24,9 @@
   "license": "UNLICENSED",
   "homepage": "https://github.com/artekr/restify-typeorm-starter#readme",
   "dependencies": {
-    "class-validator": "^0.11.1",
+    "bcrypt": "^4.0.1",
+    "class-transformer": "^0.2.3",
+    "class-validator": "^0.12.2",
     "config": "^3.3.1",
     "dotenv": "^8.2.0",
     "inversify": "^5.0.1",
@@ -39,6 +41,7 @@
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
     "@types/config": "0.0.36",
     "@types/dotenv": "^8.2.0",
     "@types/mysql": "^2.15.10",
@@ -57,8 +60,9 @@
   "_moduleAliases": {
     "@controllers": "app/controllers",
     "@services": "app/services",
-    "@types": "app/types",
     "@repositories": "app/repositories",
+    "@middlewares": "app/middlewares",
+    "@types": "app/types",
     "@dal": "app/dal",
     "@domains": "app/domains"
   }

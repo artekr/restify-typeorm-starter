@@ -9,6 +9,7 @@ services:
       - 4321:80
     volumes:
       - .:/code
+      - /code/node_modules
     depends_on:
       - db-mysql
     env_file:
