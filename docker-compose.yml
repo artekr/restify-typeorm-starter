@@ -19,6 +19,8 @@ services:
   db-mysql:
     image: mysql:8.0
     restart: unless-stopped
+    ports:
+      - 3306:3306
     volumes:
       - <you_path>:/var/lib/mysql
     env_file:
