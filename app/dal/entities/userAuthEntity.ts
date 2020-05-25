@@ -1,4 +1,4 @@
-import { UserAuthEntity } from '@dal/entities/userAuthEntity';
+import { UserEntity } from '@dal/entities/userEntity';
 import {
   Entity,
   Column,
@@ -7,11 +7,11 @@ import {
   CreateDateColumn,
   UpdateDateColumn,
   DeleteDateColumn,
-  OneToMany
+  ManyToOne
 } from 'typeorm';
 
-@Entity({ name: 't_user' })
-export class UserEntity {
+@Entity({ name: 't_user_auth' })
+export class UserAuthEntity {
   @PrimaryGeneratedColumn()
   public id: number;
 
@@ -24,10 +24,7 @@ export class UserEntity {
   public username: string;
 
   @Column()
-  public firstName: string;
-
-  @Column()
-  public lastName: string;
+  public password: string;
 
   @CreateDateColumn()
   public createdAt: Date;
@@ -39,6 +36,6 @@ export class UserEntity {
   public deletedAt: Date;
 
   // tslint:disable-next-line: no-reserved-keywords
-  @OneToMany(type => UserAuthEntity, userAuth => userAuth.user)
-  public userAuths: UserAuthEntity[];
+  @ManyToOne(type => UserEntity, user => user.userAuths)
+  public user: UserEntity;
 }

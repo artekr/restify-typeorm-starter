@@ -44,7 +44,7 @@ export class DbClient {
           password: password,
           database: database,
           entities: [__dirname + '/entities/*.ts'],
-          debug: debug,
+          logging: debug,
           synchronize: debug // Dev environment only!
         });
         if (!this.connection && connection) {

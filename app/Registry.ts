@@ -9,14 +9,15 @@ import { interfaces } from 'inversify-restify-utils';
 import { Connection } from 'typeorm';
 
 import { App } from './app';
-import { TYPE } from '@types';
+import { TYPES } from '@types';
 import { DbClient, DbType } from '@dal/dbClient';
-import { SessionController } from '@controllers/sessionController';
+import { UserAuthController } from '@controllers/userAuthController';
 import { UserController } from '@controllers/userController';
 import { UserService } from '@services/userService';
-import { SessionService } from '@services/sessionService';
+import { UserAuthService } from '@services/userAuthService';
 import { UserDataMapper } from '@dal/dataMappers/userDataMapper';
 import { UserRepository } from '@repositories/userRepository';
+import { UserAuthRepository } from '@repositories/userAuthRepository';
 
 export type DbProvider = () => Promise<Connection>;
 
@@ -81,7 +82,7 @@ export class Registry {
       database: config.get<string>('database.mysql.database'),
       debug: debug
     });
-    this.container.bind<DbProvider>('DbProvider').toProvider<Connection>(context => {
+    this.container.bind<DbProvider>(TYPES.DbProvider).toProvider<Connection>(context => {
       return async () => {
         return await mysql.getConnection();
       };
@@ -89,20 +90,21 @@ export class Registry {
   }
 
   private bindControllers(): void {
-    this.container.bind<interfaces.Controller>(TYPE.Controller).to(SessionController).whenTargetNamed('SessionController');
-    this.container.bind<interfaces.Controller>(TYPE.Controller).to(UserController).whenTargetNamed('UserController');
+    this.container.bind<interfaces.Controller>(TYPES.Controller).to(UserAuthController).whenTargetNamed('UserAuthController');
+    this.container.bind<interfaces.Controller>(TYPES.Controller).to(UserController).whenTargetNamed('UserController');
   }
 
   private bindServices(): void {
-    this.container.bind<SessionService>(TYPE.Service).to(SessionService).inSingletonScope().whenTargetNamed('Session');
-    this.container.bind<UserService>(TYPE.Service).to(UserService).inSingletonScope().whenTargetNamed('User');
+    this.container.bind<UserAuthService>(TYPES.Service).to(UserAuthService).inSingletonScope().whenTargetNamed('UserAuth');
+    this.container.bind<UserService>(TYPES.Service).to(UserService).inSingletonScope().whenTargetNamed('User');
   }
 
   private bindRepositories(): void {
-    this.container.bind<UserRepository>(TYPE.Repository).to(UserRepository).inSingletonScope().whenTargetNamed('User');
+    this.container.bind<UserRepository>(TYPES.Repository).to(UserRepository).inSingletonScope().whenTargetNamed('User');
+    this.container.bind<UserAuthRepository>(TYPES.Repository).to(UserAuthRepository).inSingletonScope().whenTargetNamed('UserAuth');
   }
 
   private bindDataMappers(): void {
-    this.container.bind<UserDataMapper>(TYPE.DataMapper).to(UserDataMapper).inSingletonScope().whenTargetNamed('User');
+    this.container.bind<UserDataMapper>(TYPES.DataMapper).to(UserDataMapper).inSingletonScope().whenTargetNamed('User');
   }
 }

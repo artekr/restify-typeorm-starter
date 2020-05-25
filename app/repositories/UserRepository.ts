@@ -1,40 +1,37 @@
-import { inject, injectable, named } from 'inversify';
+import { inject, injectable } from 'inversify';
 import { Logger } from 'pino';
 
-import { TYPE } from '@types';
+import { TYPES } from '@types';
 import { UserEntity } from '@dal/entities/userEntity';
-import { UserDataMapper } from '@dal/dataMappers/userDataMapper';
-import { User } from '@domains/entities/user';
 import { IUserRepository } from '@domains/interfaces/repository';
 import { BaseRepository } from '@repositories/base/baseRepository';
 
 import { DbProvider } from '../registry';
 
 @injectable()
-export class UserRepository extends BaseRepository<User, UserEntity> implements IUserRepository {
+export class UserRepository extends BaseRepository<UserEntity> implements IUserRepository {
 
   constructor(
     @inject('logger') private logger: Logger,
-    @inject('DbProvider') private mysqlProvider: DbProvider,
-    @inject(TYPE.DataMapper) @named('User') protected dataMapper: UserDataMapper
+    @inject(TYPES.DbProvider) private mysqlProvider: DbProvider
   ) {
-    super(dataMapper);
+    super();
     this.mysqlProvider().then(connection => {
       this.repository = connection.getRepository(UserEntity);
     });
   }
 
-  public async createOne(obj: User): Promise<User> {
-    this.logger.info('UserRepository | createOne');
-    return super.createOne(obj);
+  public async createOne(entity: UserEntity): Promise<UserEntity> {
+    this.logger.info('UserRepository | createOne: %o', entity);
+    return super.createOne(entity);
   }
 
-  public async getOne(id: number): Promise<User> {
+  public async getOne(id: number): Promise<UserEntity> {
     this.logger.info('UserRepository | getOne id: %d', id);
     return super.getOne(id);
   }
 
-  public async findOneBy(parameters: { [index: string]: any }): Promise<UserEntity> {
-    return await this.repository.findOne(Object.assign(parameters));
+  public async findOneBy(parameters: { [key: string]: any }): Promise<UserEntity> {
+    return super.findOneBy(Object.assign(parameters));
   }
 }

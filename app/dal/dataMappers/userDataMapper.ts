@@ -1,7 +1,7 @@
 import { injectable } from 'inversify';
 
 import { EntityDataMapper } from '@dal/interfaces/entityDataMapper';
-import { User } from '@domains/entities/user';
+import { User } from '@domains/models/user';
 import { UserEntity } from '@dal/entities/userEntity';
 
 @injectable()
