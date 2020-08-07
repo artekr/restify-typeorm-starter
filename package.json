@@ -32,7 +32,7 @@
     "@types/restify-errors": "^4.3.3",
     "@types/jsonwebtoken": "^8.5.0",
     "bcrypt": "^4.0.1",
-    "class-transformer": "^0.2.3",
+    "class-transformer": "^0.3.1",
     "class-validator": "^0.12.2",
     "config": "^3.3.1",
     "dotenv": "^8.2.0",
