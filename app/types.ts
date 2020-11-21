@@ -3,7 +3,7 @@ import { TYPE as RestifyTypes } from 'inversify-restify-utils';
 // tslint:disable export-name
 export const TYPES = {
   Controller: RestifyTypes.Controller,
-  DbProvider: Symbol.for('DbProvider'),
+  DBConnection: Symbol.for('DBConnection'),
   Gateway: Symbol.for('Gateway'),
   Service: Symbol.for('Service'),
   Repository: Symbol.for('Repository'),

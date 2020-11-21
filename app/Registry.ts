@@ -4,7 +4,7 @@ import * as config from 'config';
 import { IConfig } from 'config';
 import * as pino from 'pino';
 import { Logger } from 'pino';
-import { Container } from 'inversify';
+import { Container, AsyncContainerModule } from 'inversify';
 import { interfaces } from 'inversify-restify-utils';
 import { Connection } from 'typeorm';
 
@@ -19,24 +19,12 @@ import { UserDataMapper } from '@dal/dataMappers/userDataMapper';
 import { UserRepository } from '@repositories/userRepository';
 import { UserAuthRepository } from '@repositories/userAuthRepository';
 
-export type DbProvider = () => Promise<Connection>;
-
 export class Registry {
   private static instance: Registry;
   private container: Container;
 
   private constructor() {
     this.container = new Container();
-    // Bindings
-    this.bindApp();
-    this.bindConfig();
-    this.bindLogger();
-    this.bindMysqlConnection();
-
-    this.bindRepositories();
-    this.bindServices();
-    this.bindControllers();
-    this.bindDataMappers();
   }
 
   public static getInstance(): Registry {
@@ -46,20 +34,19 @@ export class Registry {
     return Registry.instance;
   }
 
-  public static getContainer(): Container {
-    return Registry.getInstance().container;
-  }
+  public static async getContainer(): Promise<Container> {
+    const { container } = Registry.getInstance();
 
-  // Bindings
-  private bindApp(): void {
-    this.container.bind(App).toSelf().inSingletonScope();
-  }
+    // Return the container if already bind
+    if (container.isBound(App)) {
+      return container;
+    }
 
-  private bindConfig(): void {
-    this.container.bind<IConfig>('config').toConstantValue(config);
-  }
+    // Bind App
+    container.bind(App).toSelf().inSingletonScope();
 
-  private bindLogger(): void {
+    // Bind middlewares
+    container.bind<IConfig>('config').toConstantValue(config);
     const logger = pino({
       name: config.get<string>('name'),
       prettyPrint: {
@@ -68,11 +55,8 @@ export class Registry {
       },
       level: 'debug'
     });
-    this.container.bind<Logger>('logger').toConstantValue(logger);
-  }
+    container.bind<Logger>('logger').toConstantValue(logger);
 
-  private bindMysqlConnection(): void {
-    /** Bind the mysql connection */
     const debug = config.get<string>('database.mysql.debug') === 'true' || config.get<boolean>('database.mysql.debug') === true;
     const mysql = new DbClient(DbType.Mysql, {
       host: config.get<string>('database.mysql.host'),
@@ -82,29 +66,28 @@ export class Registry {
       database: config.get<string>('database.mysql.database'),
       debug: debug
     });
-    this.container.bind<DbProvider>(TYPES.DbProvider).toProvider<Connection>(context => {
-      return async () => {
-        return await mysql.getConnection();
-      };
-    });
-  }
+    await container.loadAsync(
+      new AsyncContainerModule(async (bind) => {
+        const connection = await mysql.getConnection();
+        bind<Connection>(TYPES.DBConnection).toConstantValue(connection);
+      })
+    );
 
-  private bindControllers(): void {
-    this.container.bind<interfaces.Controller>(TYPES.Controller).to(UserAuthController).whenTargetNamed('UserAuthController');
-    this.container.bind<interfaces.Controller>(TYPES.Controller).to(UserController).whenTargetNamed('UserController');
-  }
+    // Bind controllers
+    container.bind<interfaces.Controller>(TYPES.Controller).to(UserAuthController).whenTargetNamed('UserAuthController');
+    container.bind<interfaces.Controller>(TYPES.Controller).to(UserController).whenTargetNamed('UserController');
 
-  private bindServices(): void {
-    this.container.bind<UserAuthService>(TYPES.Service).to(UserAuthService).inSingletonScope().whenTargetNamed('UserAuth');
-    this.container.bind<UserService>(TYPES.Service).to(UserService).inSingletonScope().whenTargetNamed('User');
-  }
+    // Bind services
+    container.bind<UserAuthService>(TYPES.Service).to(UserAuthService).inSingletonScope().whenTargetNamed('UserAuth');
+    container.bind<UserService>(TYPES.Service).to(UserService).inSingletonScope().whenTargetNamed('User');
 
-  private bindRepositories(): void {
-    this.container.bind<UserRepository>(TYPES.Repository).to(UserRepository).inSingletonScope().whenTargetNamed('User');
-    this.container.bind<UserAuthRepository>(TYPES.Repository).to(UserAuthRepository).inSingletonScope().whenTargetNamed('UserAuth');
-  }
+    // Bind repositories
+    container.bind<UserRepository>(TYPES.Repository).to(UserRepository).inSingletonScope().whenTargetNamed('User');
+    container.bind<UserAuthRepository>(TYPES.Repository).to(UserAuthRepository).inSingletonScope().whenTargetNamed('UserAuth');
 
-  private bindDataMappers(): void {
-    this.container.bind<UserDataMapper>(TYPES.DataMapper).to(UserDataMapper).inSingletonScope().whenTargetNamed('User');
+    // Bind data mappers
+    container.bind<UserDataMapper>(TYPES.DataMapper).to(UserDataMapper).inSingletonScope().whenTargetNamed('User');
+
+    return container;
   }
 }

@@ -21,7 +21,7 @@ export class App {
 
   public async start(): Promise<App> {
     // Initialize server
-    const serverBuilder = new InversifyRestifyServer(Registry.getContainer());
+    const serverBuilder = new InversifyRestifyServer(await Registry.getContainer());
     serverBuilder.setConfig((server: Server) => {
       server.pre((req: Request, res: Response, next: Function) => {
         req.headers['x-request-id'] = <string> req.headers['x-request-id'] || 'x-request-id NOT SET';

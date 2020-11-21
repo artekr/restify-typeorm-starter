@@ -11,12 +11,12 @@ services:
       - .:/code
       - /code/node_modules
     depends_on:
-      - db-mysql
+      - db
     env_file:
       - .env.development
     command: npm run start:watch
 
-  db-mysql:
+  db:
     image: mysql:8.0
     restart: unless-stopped
     ports:

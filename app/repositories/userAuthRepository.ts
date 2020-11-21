@@ -1,4 +1,5 @@
 import { inject, injectable, named } from 'inversify';
+import { Connection } from 'typeorm';
 import { Logger } from 'pino';
 
 import { TYPES } from '@types';
@@ -6,19 +7,14 @@ import { BaseRepository } from '@repositories/base/baseRepository';
 import { UserAuthEntity } from '@dal/entities/userAuthEntity';
 import { IUserAuthRepository } from '@domains/interfaces/repository';
 
-import { DbProvider } from '../registry';
-
 @injectable()
 export class UserAuthRepository extends BaseRepository<UserAuthEntity> implements IUserAuthRepository {
 
   constructor(
     @inject('logger') private logger: Logger,
-    @inject(TYPES.DbProvider) private mysqlProvider: DbProvider
+    @inject(TYPES.DBConnection) protected connection: Connection
   ) {
-    super();
-    this.mysqlProvider().then(connection => {
-      this.repository = connection.getRepository(UserAuthEntity);
-    });
+    super(connection.getRepository(UserAuthEntity));
   }
 
   public async createOne(entity: UserAuthEntity): Promise<UserAuthEntity> {

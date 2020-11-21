@@ -8,7 +8,9 @@ export class BaseRepository<DalEntity> implements Repository<DalEntity> {
 
   protected repository: TypeOrmReposity<DalEntity>;
 
-  public constructor() {}
+  public constructor(_repository: TypeOrmReposity<DalEntity>) {
+    this.repository = _repository;
+  }
 
   public async createOne(obj: DalEntity): Promise<DalEntity> {
     return new Promise<DalEntity>(async (resolve, reject) => {
